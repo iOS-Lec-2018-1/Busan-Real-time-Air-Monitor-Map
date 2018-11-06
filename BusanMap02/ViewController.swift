@@ -245,8 +245,6 @@ class ViewController: UIViewController, MKMapViewDelegate, XMLParserDelegate {
             label.textColor = UIColor.red
 //            label.text = annotation.id // set text here
             
-            //let castBusanData = annotation as! BusanData
-            
             label.text = castBusanData.pm10
             pin.addSubview(label)
             annotationView = pin
