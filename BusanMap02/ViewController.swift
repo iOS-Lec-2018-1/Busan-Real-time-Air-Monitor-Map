@@ -235,6 +235,7 @@ class ViewController: UIViewController, MKMapViewDelegate, XMLParserDelegate {
             //pin.image = UIImage(named: "cabifyPin")
             pin.isEnabled = true
             pin.canShowCallout = true
+            pin.image = UIImage(named: "map-pin.jpg")
             
             let castBusanData = annotation as! BusanData
             let pm10Val = castBusanData.pm10Cai
