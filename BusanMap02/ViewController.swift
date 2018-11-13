@@ -8,8 +8,9 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
-class ViewController: UIViewController, MKMapViewDelegate, XMLParserDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, XMLParserDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var myMapView: MKMapView!
     
@@ -61,12 +62,25 @@ class ViewController: UIViewController, MKMapViewDelegate, XMLParserDelegate {
         "부산북항" : ["부산 동구 충장대로 314 관공선부두 내", "35.1173881", "129.0465578", "관공선부두 내", "도로변", "공업지역"]
     ]
     
+    // LocationManager 객체 생성
+    var locationManager = CLLocationManager()
+    
     // 35.1173881,129.0465578
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "부산 미세먼지 지도"
         // Do any additional setup after loading the view, typically from a nib.
+        
+        // Location Tracking
+        locationManager.delegate = self
+        locationManager.startUpdatingLocation()
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+        locationManager.requestAlwaysAuthorization()
+        
+        myMapView.showsUserLocation = true  
+        
         
         myParse()
         timer = Timer.scheduledTimer(timeInterval: 60*60, target: self, selector: #selector(myParse), userInfo: nil, repeats: true)
@@ -290,14 +304,14 @@ class ViewController: UIViewController, MKMapViewDelegate, XMLParserDelegate {
         let mTitle = "미세먼지(PM 10)  \(mPM10Cai!) (\(vPM10!) ug/m3)"
         
         let ac = UIAlertController(title: vStation! + " 대기질 측정소", message: nil, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "측정시간  " + currentTime! , style: .default, handler: nil))
-        
+        ac.addAction(UIAlertAction(title: "측정시간 " + currentTime!, style: .default, handler: nil))
         ac.addAction(UIAlertAction(title: mTitle, style: .default, handler: nil))
-        
         ac.addAction(UIAlertAction(title: "닫기", style: .cancel, handler: nil))
         self.present(ac, animated: true, completion: nil)
         
     }
+    
+    
     
     // XML Parsing Delegate 메소드
     // XMLParseDelegate
